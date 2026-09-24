@@ -1,0 +1,8 @@
+[tool.ruff]
+target-version = "py312"
+extend-exclude = [".venv", "secret", "控え"]
+# 日本語コメント/文字列は全角文字で文字数が伸びやすいため、行長は緩め(可読性上の実害がないため)。
+line-length = 160
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]

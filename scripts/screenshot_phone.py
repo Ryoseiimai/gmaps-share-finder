@@ -3,7 +3,6 @@
 座標はダミー(mockのターゲット付近)を使う。本人の実位置は使わない。
 """
 import json
-import sys
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
