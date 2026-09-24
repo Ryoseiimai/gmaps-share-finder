@@ -1,7 +1,7 @@
 {
   "name": "gmaps-share-finder",
   "private": true,
-  "description": "おじさん探しゲーム: Googleマップの位置共有を使ったリアル鬼ごっこ実験ツール",
+  "description": "OG探しゲーム: Googleマップの位置共有を使ったリアル鬼ごっこ実験ツール",
   "scripts": {
     "dev": "bash scripts/dev.sh",
     "test": "cd worker && npm test"

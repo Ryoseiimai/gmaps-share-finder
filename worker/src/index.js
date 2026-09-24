@@ -151,7 +151,7 @@ const HTML_PAGE = String.raw`<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>おじさん探し</title>
+<title>OG探し</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
@@ -180,7 +180,7 @@ const HTML_PAGE = String.raw`<!DOCTYPE html>
 </style>
 </head>
 <body>
-  <h1>🕵️ おじさん探しゲーム</h1>
+  <h1>🕵️ OG探しゲーム</h1>
   <div id="arrow-wrap"><div id="arrow">⬆️</div></div>
   <div id="distance">--<small> m</small></div>
   <div id="judge" class="notfound">未発見</div>

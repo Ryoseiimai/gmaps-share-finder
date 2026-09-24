@@ -1,4 +1,4 @@
-# おじさん探しゲーム (gmaps-share-finder)
+# OG探しゲーム (gmaps-share-finder)
 
 [![CI](https://github.com/Ryoseiimai/gmaps-share-finder/actions/workflows/ci.yml/badge.svg)](https://github.com/Ryoseiimai/gmaps-share-finder/actions/workflows/ci.yml)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Ryoseiimai/gmaps-share-finder)

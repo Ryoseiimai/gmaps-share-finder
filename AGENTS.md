@@ -6,7 +6,7 @@ a technical overview.
 
 ## What this project is
 
-`gmaps-share-finder` ("おじさん探しゲーム") is a small real-life hide-and-seek
+`gmaps-share-finder` ("OG探しゲーム") is a small real-life hide-and-seek
 game built on Google Maps' "Share your real-time location" feature. See
 [README.md](README.md) for the full picture and diagram.
 
