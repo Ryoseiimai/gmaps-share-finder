@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>おじさん探し - ブラウザだけで動くデモ</title>
+<meta name="description" content="gmaps-share-finder のブラウザだけで動くモック画面。実際のWorkerやアカウントには接続しません。">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px;
+    background: radial-gradient(circle at 50% 30%, #1a2a3a, #05070a 70%);
+    color: #eafcff; font-family: -apple-system, "Hiragino Sans", sans-serif;
+    text-align: center; padding: 24px;
+  }
+  h1 { font-size: 22px; margin: 0; letter-spacing: 0.05em; }
+  #banner {
+    max-width: 380px; font-size: 13px; line-height: 1.6; padding: 10px 14px;
+    border-radius: 10px; background: rgba(255,200,0,0.12); border: 1px solid rgba(255,200,0,0.4);
+    color: #ffe28a;
+  }
+  #arrow-wrap { width: 220px; height: 220px; display:flex; align-items:center; justify-content:center;
+    border-radius: 50%; background: radial-gradient(circle, rgba(0,255,200,0.12), transparent 70%);
+    border: 2px solid rgba(0,255,200,0.35); }
+  #arrow { font-size: 120px; transition: transform 0.3s ease; transform: rotate(0deg); color: #00ffc8;
+    filter: drop-shadow(0 0 12px rgba(0,255,200,0.6)); }
+  #distance { font-size: 48px; font-weight: 800; }
+  #distance small { font-size: 20px; font-weight: 500; opacity: 0.7; }
+  #status { font-size: 14px; opacity: 0.8; line-height: 1.6; max-width: 380px; }
+  #links { font-size: 13px; opacity: 0.7; max-width: 380px; line-height: 1.6; }
+  a.link { color: #00ffc8; }
+</style>
+</head>
+<body>
+  <h1>🕵️ おじさん探し - DEMO</h1>
+  <div id="banner">
+    これはブラウザだけで動くモック画面です。実際のCloudflare Workerやアカウントには一切接続していません。表示している座標・距離もすべてダミーです。<br><br>
+    This is a fully mocked, client-side-only preview. It never connects to a real Worker, account, or coordinates.
+  </div>
+  <div id="arrow-wrap"><div id="arrow">⬆️</div></div>
+  <div id="distance">--<small> m</small></div>
+  <div id="status">起動中…</div>
+  <div id="links">
+    自分の環境で本物を動かすには
+    <a class="link" href="https://github.com/Ryoseiimai/gmaps-share-finder#3-minute-quickstart">README の「3-minute quickstart」</a>
+    、または
+    <a class="link" href="https://codespaces.new/Ryoseiimai/gmaps-share-finder">GitHub Codespaces</a>
+    を使ってください。
+  </div>
+
+<script>
+(function () {
+  // このページ内だけで完結するダミー座標計算。外部通信は一切行わない。
+  function distanceMeters(lat1, lng1, lat2, lng2) {
+    const R = 6371000;
+    const toRad = (d) => (d * Math.PI) / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLng = toRad(lng2 - lng1);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  function bearingDegrees(lat1, lng1, lat2, lng2) {
+    const toRad = (d) => (d * Math.PI) / 180;
+    const toDeg = (r) => (r * 180) / Math.PI;
+    const y = Math.sin(toRad(lng2 - lng1)) * Math.cos(toRad(lat2));
+    const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) - Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lng2 - lng1));
+    return (toDeg(Math.atan2(y, x)) + 360) % 360;
+  }
+
+  // 東京駅付近のダミー中心点(config.example.jsonと同じ、実在の個人の位置ではない)
+  const CENTER = { lat: 35.6580, lng: 139.7016 };
+  const HUNTER = { lat: CENTER.lat + 80 / 111320, lng: CENTER.lng };
+  const RADIUS_M = 150;
+  const PERIOD_S = 20; // デモなので短い周期で動きを見せる
+
+  let heading = 0;
+  const arrow = document.getElementById("arrow");
+  const distanceEl = document.getElementById("distance");
+  const statusEl = document.getElementById("status");
+
+  function tick() {
+    const t = Date.now() / 1000;
+    const angle = ((t % PERIOD_S) / PERIOD_S) * 2 * Math.PI;
+    const dlat = (RADIUS_M * Math.cos(angle)) / 111320;
+    const dlng = (RADIUS_M * Math.sin(angle)) / (111320 * Math.cos((CENTER.lat * Math.PI) / 180));
+    const target = { lat: CENTER.lat + dlat, lng: CENTER.lng + dlng };
+
+    const dist = Math.round(distanceMeters(HUNTER.lat, HUNTER.lng, target.lat, target.lng));
+    const bearing = bearingDegrees(HUNTER.lat, HUNTER.lng, target.lat, target.lng);
+    distanceEl.innerHTML = dist + "<small> m</small>";
+    const rel = (bearing - heading + 360) % 360;
+    arrow.style.transform = "rotate(" + rel + "deg)";
+    statusEl.textContent = "ダミーの相手が円を描いて移動中(デモ) / " + new Date().toLocaleTimeString("ja-JP");
+  }
+
+  tick();
+  setInterval(tick, 500);
+})();
+</script>
+</body>
+</html>
