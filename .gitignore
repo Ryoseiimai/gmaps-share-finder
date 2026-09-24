@@ -1,0 +1,7 @@
+secret/
+.venv/
+config.json
+poller/run.pid
+控え/
+node_modules/
+.wrangler/

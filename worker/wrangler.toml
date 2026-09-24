@@ -1,0 +1,10 @@
+name = "ojisan-sagashi"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[[kv_namespaces]]
+binding = "OJISAN_KV"
+id = "d83dde496220450ba4fd3bae09e98150"
+
+[vars]
+ALLOWED_ORIGIN = "*"

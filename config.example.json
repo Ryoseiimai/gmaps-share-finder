@@ -1,0 +1,16 @@
+{
+  "worker_url": "https://your-worker.your-subdomain.workers.dev",
+  "shared_token": "REPLACE_WITH_YOUR_OWN_TOKEN",
+  "google_account": "your-google-account@gmail.com",
+  "cookies_file": "secret/cookies.txt",
+  "target_display_name_contains": "TARGET_NAME",
+  "mock": {
+    "enabled_when_no_real_target_found": true,
+    "center_lat": 35.6580,
+    "center_lng": 139.7016,
+    "walk_radius_m": 150,
+    "walk_speed_mps": 1.0
+  },
+  "poll_interval_seconds": 60,
+  "found_distance_m": 50
+}
