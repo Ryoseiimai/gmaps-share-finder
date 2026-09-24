@@ -1,0 +1,31 @@
+name: Feature request / 機能提案
+description: Suggest an idea for this project / アイデアを提案する
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting: features that infer or locate a person from anything other than
+        a location they **actively shared** (SNS posts, photo EXIF, tags, etc.) will not be
+        accepted — see [SECURITY.md](https://github.com/Ryoseiimai/gmaps-share-finder/blob/main/SECURITY.md).
+        投稿前に: 本人が能動的に共有した位置情報以外(SNS投稿・写真のExif・タグ付けなど)から
+        居場所を推測・特定する機能は受け付けません。SECURITY.md を参照してください。
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve? / どんな課題を解決しますか？
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution / 提案する解決策
+    validations:
+      required: true
+  - type: checkboxes
+    id: acceptable-use
+    attributes:
+      label: Acceptable use
+      options:
+        - label: This feature only uses a location the target person actively shared themselves (no SNS/photo/EXIF-based inference, no tracking without consent). / この機能は、本人が能動的に共有した位置情報のみを使います。
+          required: true
