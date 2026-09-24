@@ -12,6 +12,7 @@
  * 意図的な簡略化: 認証は単一の共有トークンのみ(本人+ポーラーの2者間利用が前提の遊び用途のため)。
  *   複数ユーザー・不特定多数向けに拡張する場合は署名付きJWT等に置き換えること。
  */
+import { distanceMeters, bearingDegrees } from "./geo.js";
 
 const TTL_SECONDS = 2 * 60 * 60; // 2時間で自動失効
 
@@ -37,29 +38,6 @@ function checkToken(request, env, bodyToken) {
   const url = new URL(request.url);
   const token = bodyToken ?? url.searchParams.get("token") ?? request.headers.get("x-token");
   return token && env.SHARED_TOKEN && token === env.SHARED_TOKEN;
-}
-
-// メートル単位の距離(ハバーサイン)
-function distanceMeters(lat1, lng1, lat2, lng2) {
-  const R = 6371000;
-  const toRad = (d) => (d * Math.PI) / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLng = toRad(lng2 - lng1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
-
-// 自分(from)から見た相手(to)への方位角(0=北, 時計回り)
-function bearingDegrees(lat1, lng1, lat2, lng2) {
-  const toRad = (d) => (d * Math.PI) / 180;
-  const toDeg = (r) => (r * 180) / Math.PI;
-  const y = Math.sin(toRad(lng2 - lng1)) * Math.cos(toRad(lat2));
-  const x =
-    Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
-    Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lng2 - lng1));
-  return (toDeg(Math.atan2(y, x)) + 360) % 360;
 }
 
 async function handleHunterPost(request, env) {
