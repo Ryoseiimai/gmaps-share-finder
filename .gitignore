@@ -5,3 +5,7 @@ poller/run.pid
 控え/
 node_modules/
 .wrangler/
+.dev.vars
+.ruff_cache/
+__pycache__/
+*.pyc
